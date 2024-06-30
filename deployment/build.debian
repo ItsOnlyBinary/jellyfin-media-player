@@ -5,6 +5,7 @@ set -o xtrace
 
 # move to source directory
 pushd ${SOURCE_DIR}
+cp debian-webclient-rules ./debian/rules
 
 # Convert to format like deb12 or ubu2204 like Jellyfin packages
 IMGSNIP="${IMG:0:3}"
