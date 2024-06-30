@@ -17,7 +17,7 @@ jobs:
         brew install ninja mpv qt@5 || true
     - name: Release build
       run: |
-        mkdir build
+        ./download_webclient.sh
         sed -i '' 's|await loadScript('\''qrc:///qtwebchannel/qwebchannel.js'\'');|document.body.style.overscrollBehavior = "none";&|g' native/nativeshell.js
         cd build
         cmake -GNinja -DQTROOT=/usr/local/opt/qt@5 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output ..
@@ -56,7 +56,7 @@ jobs:
         brew install ninja mpv qt@5 || true
     - name: Release build
       run: |
-        mkdir build
+        ./download_webclient.sh
         sed -i '' 's|await loadScript('\''qrc:///qtwebchannel/qwebchannel.js'\'');|document.body.style.overscrollBehavior = "none";&|g' native/nativeshell.js
         cd build
         cmake -GNinja -DQTROOT=/opt/homebrew/opt/qt@5 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=output ..
@@ -130,7 +130,7 @@ jobs:
         modules: "qtwebengine"
     - name: Install dependencies
       run: |
-        mkdir build
+        ./download_webclient.sh
         curl -L https://aka.ms/vs/17/release/vc_redist.x64.exe > vc_redist.x64.exe
         sed -i 's#C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Redist\\MSVC\\v142\\vcredist_x64.exe#'"$(readlink -f vc_redist.x64.exe | sed 's#/\([a-z]\)/#\1:\\#g' | tr '/' '\\' | sed 's/\\/\\\\/g')#g" bundle/win/Bundle.wxs
         curl -L https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-win.zip > ninja.zip
@@ -174,7 +174,7 @@ jobs:
         modules: "qtwebengine"
     - name: Install dependencies
       run: |
-        mkdir build
+        ./download_webclient.sh
         curl -L https://aka.ms/vs/17/release/vc_redist.x86.exe > vc_redist.x86.exe
         sed -i 's#C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\VC\\Redist\\MSVC\\v142\\vcredist_x64.exe#'"$(readlink -f vc_redist.x86.exe | sed 's#/\([a-z]\)/#\1:\\#g' | tr '/' '\\' | sed 's/\\/\\\\/g')#g" bundle/win/Bundle.wxs
         curl -L https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-win.zip > ninja.zip
