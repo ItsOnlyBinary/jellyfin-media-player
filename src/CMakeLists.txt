@@ -107,6 +107,13 @@ if(WIN32)
 endif()
 
 set(RESOURCE_ROOT .)
+if(APPLE)
+  set(RESOURCE_ROOT Resources)
+  if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/../dist/)
+    add_resources(TARGET ${MAIN_TARGET} SOURCES ${CMAKE_CURRENT_BINARY_DIR}/../dist/ DEST ${RESOURCE_ROOT}/web-client/desktop)
+  endif()
+endif()
+
 if(NOT APPLE)
   set(rsrc_locations
     ${QTROOT}/resources
@@ -117,6 +124,9 @@ if(NOT APPLE)
       install(FILES ${loc}/qtwebengine_devtools_resources.pak DESTINATION resources)
     endif()
   endforeach()
+  if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/../dist/)
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/../dist/ DESTINATION ${INSTALL_RESOURCE_DIR}/web-client/desktop)
+  endif()
 endif()
 
 if(XCODE)

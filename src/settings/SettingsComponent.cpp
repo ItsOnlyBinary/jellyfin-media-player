@@ -723,6 +723,28 @@ bool SettingsComponent::resetAndSaveOldConfiguration()
   return settingsFile.rename(Paths::dataDir("jellyfinmediaplayer.conf.old"));
 }
 
+
+/////////////////////////////////////////////////////////////////////////////////////////
+bool SettingsComponent::isUsingExternalWebClient()
+{
+  QString url;
+
+  url = SettingsComponent::Get().value(SETTINGS_SECTION_PATH, "startupurl_desktop").toString();
+
+  if (url == "bundled")
+  {
+    auto path = Paths::webClientPath("desktop");
+    QFileInfo check_file(path);
+    if (SettingsComponent::Get().value(SETTINGS_SECTION_MAIN, "forceExternalWebclient").toBool() ||
+       !(check_file.exists() && check_file.isFile())) {
+      // use built-in fallback
+      return true;
+    }
+  }
+
+  return false;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 QString SettingsComponent::getWebClientUrl(bool desktop)
 {
@@ -732,8 +754,17 @@ QString SettingsComponent::getWebClientUrl(bool desktop)
 
   if (url == "bundled")
   {
-    // Use qrc:// scheme for bundled web client
-    url = "qrc:///web-client/extension/find-webclient.html";
+    auto path = Paths::webClientPath("desktop");
+    QFileInfo check_file(path);
+    if (SettingsComponent::Get().value(SETTINGS_SECTION_MAIN, "forceExternalWebclient").toBool() ||
+       !(check_file.exists() && check_file.isFile())) {
+      // use built-in fallback
+      url = "qrc:///web-client/extension/find-webclient.html";
+    } else {
+      
+      url = "file:///" + path;
+    }
+
   }
 
   qDebug() << "Using web-client URL: " << url;
