@@ -440,6 +440,8 @@
         }
 
         onEndedInternal() {
+            window.api.power.setScreensaverEnabled(true);
+
             const stopInfo = {
                 src: this._currentSrc
             };
