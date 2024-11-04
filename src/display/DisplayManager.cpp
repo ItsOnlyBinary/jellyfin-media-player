@@ -20,16 +20,16 @@ bool DisplayManager::initialize()
   qInfo() << QString("DisplayManager found %1 Display(s).").arg(m_displays.size());
 
   // list video modes
-  for(int displayid : m_displays.keys())
-  {
-    DMDisplayPtr display = m_displays[displayid];
-    qInfo() << QString("Available modes for Display #%1 (%2)").arg(displayid).arg(display->m_name);
-    for (int modeid = 0; modeid < display->m_videoModes.size(); modeid++)
-    {
-      DMVideoModePtr mode = display->m_videoModes[modeid];
-      qInfo() << QString("Mode %1: %2").arg(modeid, 2).arg(mode->getPrettyName());
-    }
-  }
+  // for(int displayid : m_displays.keys())
+  // {
+  //   DMDisplayPtr display = m_displays[displayid];
+  //   qInfo() << QString("Available modes for Display #%1 (%2)").arg(displayid).arg(display->m_name);
+  //   for (int modeid = 0; modeid < display->m_videoModes.size(); modeid++)
+  //   {
+  //     DMVideoModePtr mode = display->m_videoModes[modeid];
+  //     qInfo() << QString("Mode %1: %2").arg(modeid, 2).arg(mode->getPrettyName());
+  //   }
+  // }
 
   // Log current display mode
   int mainDisplay = getMainDisplay();

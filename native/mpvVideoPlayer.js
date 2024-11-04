@@ -8,6 +8,7 @@
 
     class mpvVideoPlayer {
         constructor({ events, loading, appRouter, globalize, appHost, appSettings, confirm, dashboard }) {
+            console.log('events', events);
             this.events = events;
             this.loading = loading;
             this.appRouter = appRouter;
@@ -115,6 +116,7 @@
              * @private
              */
             this.onEnded = () => {
+                console.log('onEnded');
                 this.onEndedInternal();
             };
 
@@ -144,6 +146,7 @@
              * @private
              */
             this.onPlaying = () => {
+                console.log('onPlaying');
                 if (!this._started) {
                     this._started = true;
 
@@ -177,12 +180,14 @@
              * @private
              */
             this.onPause = () => {
+                console.log('onPause');
                 this._paused = true;
                 // For Syncplay ready notification
                 this.events.trigger(this, 'pause');
             };
 
             this.onWaiting = () => {
+                console.log('onWaiting');
                 this.events.trigger(this, 'waiting');
             };
 
@@ -191,6 +196,7 @@
              * @param e {Event} The event received from the `<video>` element
              */
             this.onError = async (error) => {
+                console.log('onError', error);
                 this.removeMediaDialog();
                 console.error(`media error: ${error}`);
 
@@ -229,6 +235,7 @@
         }
 
         async play(options) {
+            console.log('play', options);
             this._started = false;
             this._timeUpdated = false;
             this._currentTime = null;
@@ -349,6 +356,7 @@
          * @private
          */
         setCurrentSrc(elem, options) {
+            console.log('setCurrentSrc', options);
             return new Promise((resolve) => {
                 const val = options.url;
                 this._currentSrc = val;
@@ -440,6 +448,7 @@
         }
 
         onEndedInternal() {
+            console.log('onEndedInternal');
             window.api.power.setScreensaverEnabled(true);
 
             const stopInfo = {
@@ -454,6 +463,7 @@
         }
 
         stop(destroyPlayer) {
+            console.log('stop');
             window.api.player.stop();
             window.api.power.setScreensaverEnabled(true);
 
@@ -466,6 +476,7 @@
         }
 
         removeMediaDialog() {
+            console.log('removeMediaDialog');
             this.loading.hide();
             window.api.player.stop();
             window.api.power.setScreensaverEnabled(true);
@@ -487,6 +498,7 @@
         }
 
         destroy() {
+            console.log('destroy');
             this.removeMediaDialog();
 
             const player = window.api.player;
@@ -505,6 +517,7 @@
          */
         createMediaElement(options) {
             const dlg = document.querySelector('.videoPlayerContainer');
+            console.log('createMediaElement', dlg);
 
             if (!dlg) {
                 this.loading.show();
@@ -651,17 +664,20 @@
     }
 
     pause() {
+        console.log('pause');
         window.api.player.pause();
         window.api.power.setScreensaverEnabled(true);
     }
 
     // This is a retry after error
     resume() {
+        console.log('resume');
         this._paused = false;
         window.api.player.play();
     }
 
     unpause() {
+        console.log('unpause');
         window.api.player.play();
         window.api.power.setScreensaverEnabled(false);
     }
