@@ -1,6 +1,8 @@
 #!/bin/bash
 cd "$(dirname "$0")"
 
+dl_target="stable/v10.10.7"
+
 function download_compat {
     if [[ "$AZ_CACHE" != "" ]]
     then
@@ -30,7 +32,7 @@ function download_compat {
 }
 
 function get_webclient_version {
-    curl https://repo.jellyfin.org/files/server/portable/latest-stable/any/ |
+    curl https://repo.jellyfin.org/files/server/portable/${dl_target}/any/ |
     tr '<>/' '\t' | grep '[0-9]\+\.[0-9]\+\.[0-9]\+' | cut -f 3 | cut -d_ -f2 |
     sed 's/\.[a-z][a-z]*//g' | sort -V | tail -n 1
 }
@@ -61,7 +63,7 @@ if [[ "$update_web_client" == "yes" ]]
 then
     echo "Downloading web client..."
     wc_version=$(get_webclient_version)
-    download_compat dist.tar.gz "https://repo.jellyfin.org/files/server/portable/latest-stable/any/jellyfin_${wc_version}.tar.gz" "wc"
+    download_compat dist.tar.gz "https://repo.jellyfin.org/files/server/portable/${dl_target}/any/jellyfin_${wc_version}.tar.gz" "wc"
     if [[ "$DOWNLOAD_ONLY" != "1" ]]
     then
         rm -r build/dist 2> /dev/null
@@ -72,4 +74,3 @@ then
     fi
     echo "$wc_version" > .last_wc_version
 fi
-
